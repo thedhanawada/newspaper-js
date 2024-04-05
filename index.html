@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Newspaper Layout</title>
+  <style>
+    body { 
+      font-family: serif; 
+      margin: 20px; 
+    } 
+    #news-container { 
+      column-width: 200px; /* Adjust column width as needed */
+    }
+  </style>
+</head>
+<body>
+  <div id="news-container"></div>
+
+  <script src="newspaper.js"></script>
+  <script>
+    const myArticleText = "Headline: This is my newspaper article. It has some interesting content. Here's another paragraph. And one more for good measure."; 
+
+    createNewspaperLayout(myArticleText, "news-container", {
+      columns: 3, 
+      headlineSize: "2em",
+      columnGap: "30px"
+    }); 
+  </script>
+</body>
+</html>
