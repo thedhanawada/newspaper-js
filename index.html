@@ -1,49 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Newspaper Layout</title>
-  <style>
-    body { 
-      font-family: 'Georgia', serif; 
-      margin: 40px;  
-    } 
-
-    #news-container { 
-      column-width: 180px; 
-      column-gap: 20px;
-      border: 1px solid #ddd; 
-      padding: 20px;
-      background-color: #f9f7f1;
-    }
-
-    h2 {
-       font-size: 2em;
-       font-weight: bold;
-       margin-bottom: 10px;
-    }
-
-    p {
-      text-align: justify;  
-      margin-bottom: 15px;
-    }
-
-    img {
-      max-width: 100%; 
-      height: auto;
-      margin: 15px 0; 
-    }
-  </style>
+    <title>The Daily Chronicle</title>
+    <link rel="stylesheet" type="text/css" href="newspaper.css">
+    <script src="newspaper.js"></script>
 </head>
 <body>
-  <div id="news-container"></div>
+    <div id="newspaper-container"></div>
 
-  <script src="newspaper.js"></script>
-  <script>
-    const myArticleText = "Headline: This is my newspaper article. It has some interesting content. Here's another paragraph. \n\n[image src='path/to/image1.jpg' alt='Image 1 description']\n\nAnd one more paragraph for good measure.";
+    <script>
+        const options = {
+            containerId: 'newspaper-container',
+            title: 'The Daily Chronicle',
+            subtitle: 'Your Daily Source of News',
+            date: 'Saturday, April 06, 2024',
+            sections: [
+                {
+                    title: 'Breaking News',
+                    articles: [
+                        {
+                            title: 'Major Breakthrough in Science',
+                            image: 'image1.jpg',
+                            imageAlt: 'Science Breakthrough',
+                            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nulla sit amet aliquam lacinia, nisl nisl aliquam nisl, nec aliquam nisl nisl sit amet nisl.'
+                        },
+                        {
+                            title: 'New Policy Announced',
+                            content: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.'
+                        }
+                    ]
+                },
+                {
+                    title: 'Local News',
+                    articles: [
+                        {
+                            title: 'Community Event a Success',
+                            image: 'image2.jpg',
+                            imageAlt: 'Community Event',
+                            content: 'Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.'
+                        },
+                        {
+                            title: 'New Restaurant Opens',
+                            content: 'Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.'
+                        }
+                    ]
+                }
+            ],
+            advertisements: [
+                '<img src="ad1.jpg" alt="Advertisement 1">',
+                '<img src="ad2.jpg" alt="Advertisement 2">'
+            ],
+            footer: '&copy; 2024 The Daily Chronicle. All rights reserved.'
+        };
 
-    createNewspaperLayout(myArticleText, "news-container", {
-      columns: 3 
-    });
-  </script>
+        createNewspaperLayout(options);
+    </script>
 </body>
 </html>

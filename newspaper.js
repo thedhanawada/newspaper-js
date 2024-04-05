@@ -1,81 +1,136 @@
-function createNewspaperLayout(text, containerId, options = {}) {
-  const container = document.getElementById(containerId);
-  container.style.columnCount = options.columns || 3;
-  container.style.columnGap = options.columnGap || "20px";
+function createNewspaperLayout(options) {
+  const container = document.getElementById(options.containerId);
+  container.classList.add('newspaper-container');
 
-  let currentColumn = 0;
-  const columns = createColumnElements(options.columns || 3);
-  container.append(...columns);
+  const header = createHeader(options.title, options.subtitle, options.date);
+  container.appendChild(header);
 
-  const sections = splitContent(text); 
+  const content = createContent(options.sections);
+  container.appendChild(content);
+
+  const footer = createFooter(options.footer);
+  container.appendChild(footer);
+
+  const advertisementSection = createAdvertisementSection(options.advertisements);
+  container.appendChild(advertisementSection);
+
+  const subscribeSection = createSubscribeSection();
+  container.appendChild(subscribeSection);
+}
+
+function createHeader(title, subtitle, date) {
+  const header = document.createElement('header');
+  
+  const titleElement = document.createElement('h1');
+  titleElement.textContent = title;
+  header.appendChild(titleElement);
+
+  if (subtitle) {
+      const subtitleElement = document.createElement('h2');
+      subtitleElement.textContent = subtitle;
+      header.appendChild(subtitleElement);
+  }
+
+  const dateElement = document.createElement('p');
+  dateElement.classList.add('date');
+  dateElement.textContent = date;
+  header.appendChild(dateElement);
+
+  return header;
+}
+
+function createContent(sections) {
+  const content = document.createElement('div');
+  content.classList.add('content');
 
   sections.forEach(section => {
-    if (typeof section === "string") {
-      columns[currentColumn].append(createTextElement(section));
-    } else {
-      columns[currentColumn].append(createImageElement(section));
-    }
-    currentColumn = (currentColumn + 1) % columns.length; 
+      const sectionElement = createSection(section);
+      content.appendChild(sectionElement);
   });
 
-  adjustColumnHeights(columns); 
+  return content;
 }
 
-function splitContent(text) {
-  const sections = [];
-  let currentSection = "";
+function createSection(section) {
+  const sectionElement = document.createElement('section');
 
-  text.split("\n\n").forEach(paragraph => {
-    if (paragraph.startsWith("[image")) {
-      sections.push(parseImageSection(paragraph));
-      currentSection = "";
-    } else {
-      currentSection += paragraph + "\n";
-    }
+  const titleElement = document.createElement('h3');
+  titleElement.textContent = section.title;
+  sectionElement.appendChild(titleElement);
+
+  const columnsElement = document.createElement('div');
+  columnsElement.classList.add('columns');
+
+  section.articles.forEach(article => {
+      const articleElement = createArticle(article);
+      columnsElement.appendChild(articleElement);
   });
 
-  if (currentSection) {
-    sections.push(currentSection.trim());
+  sectionElement.appendChild(columnsElement);
+
+  return sectionElement;
+}
+
+function createArticle(article) {
+  const articleElement = document.createElement('article');
+
+  if (article.title) {
+      const titleElement = document.createElement('h4');
+      titleElement.textContent = article.title;
+      articleElement.appendChild(titleElement);
   }
 
-  return sections;
-}
-
-function parseImageSection(text) {
-  const openingBracket = text.indexOf("[image src='");
-  if (openingBracket !== -1) {
-    const closingBracket = text.indexOf("'", openingBracket + 14);
-    const src = text.substring(openingBracket + 14, closingBracket);
-    const altText = text.substring(closingBracket + 7).split("'")[0];
-    return { src, alt: altText };
+  if (article.image) {
+      const imageElement = document.createElement('img');
+      imageElement.src = article.image;
+      imageElement.alt = article.imageAlt || '';
+      articleElement.appendChild(imageElement);
   }
-  return null; 
-}
 
-function createColumnElements(count) {
-  const columns = [];
-  for (let i = 0; i < count; i++) {
-    const column = document.createElement("div");
-    column.style.width = "100%";
-    columns.push(column);
+  if (article.content) {
+      const contentElement = document.createElement('p');
+      contentElement.textContent = article.content;
+      articleElement.appendChild(contentElement);
   }
-  return columns;
+
+  return articleElement;
 }
 
-function createTextElement(text) {
-  const textElement = document.createElement("p");
-  textElement.textContent = text;
-  return textElement;
+function createFooter(content) {
+  const footer = document.createElement('footer');
+  footer.innerHTML = content;
+  return footer;
 }
 
-function createImageElement(section) {
-  const imageElement = document.createElement("img");
-  imageElement.src = section.src; 
-  imageElement.alt = section.alt || "Image"; 
-  return imageElement;
+function createAdvertisementSection(advertisements) {
+  const section = document.createElement('section');
+  section.classList.add('advertisement-section');
+
+  advertisements.forEach(ad => {
+      const adElement = document.createElement('div');
+      adElement.classList.add('advertisement');
+      adElement.innerHTML = ad;
+      section.appendChild(adElement);
+  });
+
+  return section;
 }
 
-function adjustColumnHeights(columns) {
-  const maxHeight = Math.max(...columns.map(col => col.offsetHeight));
-  columns.forEach(col => col.style.height = maxHeight + "px");
+function createSubscribeSection() {
+  const section = document.createElement('section');
+  section.classList.add('subscribe-section');
+
+  const title = document.createElement('h3');
+  title.textContent = 'Subscribe to Our Newspaper';
+  section.appendChild(title);
+
+  const form = document.createElement('form');
+  form.innerHTML = `
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <button type="submit">Subscribe</button>
+  `;
+  section.appendChild(form);
+
+  return section;
 }
