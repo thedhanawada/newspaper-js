@@ -1,14 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Simple Newspaper Layout</title>
+  <title>Newspaper Layout</title>
   <style>
     body { 
-      font-family: serif; 
-      margin: 20px; 
+      font-family: 'Georgia', serif; 
+      margin: 40px;  
     } 
+
     #news-container { 
-      column-width: 200px; /* Adjust column width as needed */
+      column-width: 180px; 
+      column-gap: 20px;
+      border: 1px solid #ddd; 
+      padding: 20px;
+      background-color: #f9f7f1;
+    }
+
+    h2 {
+       font-size: 2em;
+       font-weight: bold;
+       margin-bottom: 10px;
+    }
+
+    p {
+      text-align: justify;  
+      margin-bottom: 15px;
+    }
+
+    img {
+      max-width: 100%; 
+      height: auto;
+      margin: 15px 0; 
     }
   </style>
 </head>
@@ -17,13 +39,11 @@
 
   <script src="newspaper.js"></script>
   <script>
-    const myArticleText = "Headline: This is my newspaper article. It has some interesting content. Here's another paragraph. And one more for good measure."; 
+    const myArticleText = "Headline: This is my newspaper article. It has some interesting content. Here's another paragraph. \n\n[image src='path/to/image1.jpg' alt='Image 1 description']\n\nAnd one more paragraph for good measure.";
 
     createNewspaperLayout(myArticleText, "news-container", {
-      columns: 3, 
-      headlineSize: "2em",
-      columnGap: "30px"
-    }); 
+      columns: 3 
+    });
   </script>
 </body>
 </html>
